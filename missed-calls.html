@@ -138,24 +138,21 @@
       </nav>
     </section>
 
-    <section class="section" aria-labelledby="outreach-title">
-      <h2 id="outreach-title">Shareable blurb</h2>
-      <p>Short text you can forward to someone who runs a shop — or post publicly. Honest, no fake “I already talked to your cousin” energy.</p>
+    <section class="section" aria-labelledby="post-title">
+      <h2 id="post-title">Public post blurb</h2>
+      <p>Ready-to-post copy for X or the website. Public only — not a DM script, not a 1:1 cold message.</p>
       <div class="outreach">
-        <pre id="outreach-text">Quick thought for anyone running a shop, café, clinic, or service business:
+        <pre id="outreach-text">Missed calls are unpaid invoices.
 
-When you’re slammed, the phone still rings. Most people who hit voicemail don’t leave a message — they call the next place. A few missed calls a week adds up fast (even one $150–$300 ticket is real money).
+When a shop, café, clinic, or service desk is slammed, the phone still rings. Most people who hit voicemail don’t leave a message — they call the next place. A few missed calls a week adds up fast (even one $150–$300 ticket is real money). Assumptions vary; plug in your average ticket.
 
-I’m building AI agents with Vaexor that catch missed calls, handle basic email intake, and help with simple scheduling — so the lead doesn’t die while you’re busy.
+Building AI agents with Vaexor that catch missed calls, handle basic email intake, and help with simple scheduling — so the lead doesn’t die while you’re busy.
 
-Not live phone lines to sell you today; early conversations welcome if this pain is real for you.
-
-→ https://vaexor.github.io/vaexor-links/missed-calls.html
-→ @vaexor_ on X
-
-No spam pitch. If it’s not useful, ignore.</pre>
+Offer in progress — not live phone lines today. Details:
+https://vaexor.github.io/vaexor-links/missed-calls.html
+@vaexor_</pre>
         <div class="copy-row">
-          <button type="button" class="copy-btn" id="copy-outreach">Copy blurb</button>
+          <button type="button" class="copy-btn" id="copy-outreach">Copy public blurb</button>
         </div>
       </div>
     </section>
@@ -169,7 +166,7 @@ No spam pitch. If it’s not useful, ignore.</pre>
       try {
         await navigator.clipboard.writeText(text);
         button.textContent = 'Copied';
-        setTimeout(() => { button.textContent = 'Copy blurb'; }, 1800);
+        setTimeout(() => { button.textContent = 'Copy public blurb'; }, 1800);
       } catch (_) {
         button.textContent = 'Select the text above';
       }
