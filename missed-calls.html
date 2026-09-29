@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Vaexor missed-call AI agents — recover lost revenue from unanswered calls, emails, and intake for any small business.">
+  <title>Missed calls · Vaexor AI agents</title>
+  <style>
+    :root { color-scheme: dark; --bg: #090b10; --panel: #11151d; --line: #252c38; --text: #f4f7fb; --muted: #a8b0bd; --accent: #f7931a; --accent-2: #ffb454; --ok: #7ddea2; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--text); background: radial-gradient(circle at 50% -10%, #1c2737 0, var(--bg) 48%); }
+    main { width: min(100% - 32px, 680px); margin: 0 auto; padding: 48px 0 48px; }
+    .back { display: inline-block; color: var(--muted); text-decoration: none; margin-bottom: 36px; font-size: .92rem; }
+    .back:hover, .back:focus-visible { color: var(--text); }
+    .eyebrow { color: var(--accent-2); font-size: .78rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+    h1 { margin: 11px 0 14px; font-size: clamp(2rem, 7vw, 3rem); line-height: 1.02; letter-spacing: -.05em; }
+    h2 { margin: 0 0 12px; font-size: 1.25rem; letter-spacing: -.02em; }
+    h3 { margin: 0 0 8px; font-size: 1rem; }
+    .lede { max-width: 540px; color: var(--muted); font-size: 1.08rem; line-height: 1.65; }
+    .math { margin: 28px 0 0; padding: clamp(20px, 4vw, 28px); border: 1px solid #9a5f1a; border-radius: 18px; background: linear-gradient(120deg, #2c2114, #171a1f); }
+    .math .big { margin: 8px 0 6px; font-size: clamp(1.6rem, 5vw, 2.1rem); font-weight: 800; letter-spacing: -.03em; color: var(--accent-2); }
+    .math p { margin: 0; color: #d7c4a4; line-height: 1.55; }
+    .assumptions { margin-top: 14px; padding-top: 14px; border-top: 1px solid #5a3d12; color: #b9a68a; font-size: .86rem; line-height: 1.55; }
+    .grid { display: grid; gap: 12px; margin-top: 28px; }
+    .card { padding: 18px 20px; border: 1px solid var(--line); border-radius: 15px; background: color-mix(in srgb, var(--panel) 92%, transparent); }
+    .card strong { color: var(--text); }
+    .card p { margin: 6px 0 0; color: var(--muted); font-size: .95rem; line-height: 1.55; }
+    .section { margin-top: 42px; }
+    .section > p { color: var(--muted); line-height: 1.6; }
+    .honest { margin-top: 18px; padding: 16px 18px; border: 1px dashed #394454; border-radius: 12px; color: #c5ccd6; font-size: .92rem; line-height: 1.55; background: #0d1118; }
+    .ctas { display: grid; gap: 12px; margin-top: 22px; }
+    .link { position: relative; display: flex; align-items: center; justify-content: space-between; min-height: 60px; padding: 15px 18px; color: var(--text); text-decoration: none; border: 1px solid var(--line); border-radius: 14px; background: color-mix(in srgb, var(--panel) 90%, transparent); transition: border-color .18s ease, transform .18s ease, background .18s ease; }
+    .link:hover, .link:focus-visible { transform: translateY(-2px); border-color: #667386; background: #181e28; outline: none; }
+    .link.primary { border-color: #9a5f1a; background: linear-gradient(100deg, #2c2114, #171a1f); }
+    .copy { display: flex; flex-direction: column; gap: 3px; }
+    .label { font-weight: 700; }
+    .sub { color: var(--muted); font-size: .85rem; }
+    .arrow { color: var(--accent-2); font-size: 1.15rem; }
+    /* Demo transcript */
+    .phone { margin-top: 18px; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: #0c1017; box-shadow: 0 18px 50px #0006; }
+    .phone-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--line); background: #141a24; font-size: .82rem; color: var(--muted); }
+    .phone-bar .status { color: var(--ok); font-weight: 700; }
+    .thread { display: grid; gap: 12px; padding: 18px 16px 20px; }
+    .bubble { max-width: 92%; padding: 12px 14px; border-radius: 14px; line-height: 1.45; font-size: .95rem; }
+    .bubble .meta { display: block; margin-bottom: 5px; font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; opacity: .75; }
+    .bubble.customer { justify-self: start; background: #1a2230; border: 1px solid #2d3646; }
+    .bubble.agent { justify-self: end; background: linear-gradient(145deg, #2a2114, #1b1710); border: 1px solid #6b4818; }
+    .bubble.system { justify-self: center; max-width: 100%; text-align: center; padding: 8px 12px; color: #8b95a5; background: transparent; border: none; font-size: .82rem; }
+    .steps { margin: 16px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+    .steps li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; color: var(--muted); font-size: .95rem; line-height: 1.5; }
+    .steps .n { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: #1a2230; border: 1px solid #334054; color: var(--accent-2); font-size: .78rem; font-weight: 800; }
+    .outreach { margin-top: 16px; padding: 18px; border: 1px solid var(--line); border-radius: 14px; background: #0c1017; }
+    .outreach pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .88rem; line-height: 1.55; color: #e4e9f0; }
+    .copy-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+    button.copy-btn { padding: 10px 14px; border: 1px solid #b36d19; border-radius: 10px; color: #161109; background: var(--accent); font: inherit; font-weight: 800; cursor: pointer; }
+    button.copy-btn:hover, button.copy-btn:focus-visible { background: var(--accent-2); outline: none; }
+    footer { margin-top: 36px; color: #707b8b; font-size: .8rem; }
+    footer a { color: #aeb8c7; }
+    @media (max-width: 420px) { main { padding-top: 32px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <a class="back" href="index.html">← Back to Vaexor links</a>
+    <div class="eyebrow">Vaexor · AI agents for small business</div>
+    <h1>Missed calls are unpaid invoices.</h1>
+    <p class="lede">Restaurants, shops, offices, clinics, contractors — when you’re busy, the phone still rings. Callers who don’t get an answer usually don’t leave a voicemail. They call the next place.</p>
+
+    <section class="math" aria-labelledby="math-title">
+      <div class="eyebrow" id="math-title">Lost-revenue sketch</div>
+      <p class="big">3 missed calls this week ≈ $450–$900 walking out.</p>
+      <p>If even <strong>one</strong> of those callers would have booked a typical small-ticket job, order, or appointment, that’s real money — every quiet week, not just peak season.</p>
+      <p class="assumptions"><strong>Assumptions (labeled, not a case study):</strong> average booked ticket ~$150–$300 (lunch catering, retail special order, service visit, consult). Conversion if someone answered: ~1 in 3 missed calls. Your numbers will differ — plug in your own average ticket and miss rate.</p>
+    </section>
+
+    <section class="section" aria-labelledby="what-title">
+      <h2 id="what-title">What the agent does</h2>
+      <p>An AI front desk that covers the gap when you can’t pick up — for any business that lives on the phone and inbox.</p>
+      <div class="grid">
+        <div class="card"><strong>Missed-call catch</strong><p>When a call goes unanswered, the agent can text or call back fast: who you are, that you got the message, and the next useful question.</p></div>
+        <div class="card"><strong>Email intake</strong><p>Reads basic inquiry emails, pulls name / need / timing, and drafts a clear reply you can send or auto-send with your rules.</p></div>
+        <div class="card"><strong>Scheduling &amp; handoff</strong><p>Collects availability, books into a simple calendar slot (or queues for you), and leaves a clean note instead of a voicemail graveyard.</p></div>
+      </div>
+      <p class="honest"><strong>Straight talk:</strong> this is an offer for a product Vaexor is building on the Bitcoin Agent Stack — not a live phone number you can dial today, and not a pile of invented customer logos. If it fits your shop, talk to us. Early operators help shape what ships.</p>
+    </section>
+
+    <section class="section" id="demo" aria-labelledby="demo-title">
+      <h2 id="demo-title">Demo · mock conversation</h2>
+      <p>Example: a neighborhood café misses a catering call during the lunch rush. The agent texts back within a minute, runs intake, and parks a hold on the calendar.</p>
+      <ol class="steps">
+        <li><span class="n">1</span><span>Customer calls · no answer (you’re plating orders)</span></li>
+        <li><span class="n">2</span><span>Agent texts back · identifies the business · asks one clear question</span></li>
+        <li><span class="n">3</span><span>Intake · headcount, date, dietary notes</span></li>
+        <li><span class="n">4</span><span>Schedules a callback / hold · owner gets a short summary</span></li>
+      </ol>
+
+      <div class="phone" aria-label="Mock SMS transcript">
+        <div class="phone-bar">
+          <span>SMS · +1 (555) 014-2201</span>
+          <span class="status">Agent online</span>
+        </div>
+        <div class="thread">
+          <div class="bubble system">Missed call · 12:14p · Riverside Café main line</div>
+          <div class="bubble agent"><span class="meta">Vaexor agent · 12:14p</span>Hi — this is the after-hours / missed-call desk for Riverside Café. We saw your call. Are you looking to place a catering order, reserve a table, or something else?</div>
+          <div class="bubble customer"><span class="meta">Caller · 12:15p</span>Catering for Thursday — about 18 people, office lunch.</div>
+          <div class="bubble agent"><span class="meta">Vaexor agent · 12:15p</span>Got it — Thursday office lunch, ~18 people. Any dietary needs (veg / gluten-free), and what’s your preferred pickup or delivery window?</div>
+          <div class="bubble customer"><span class="meta">Caller · 12:16p</span>2 gluten-free. Delivery around noon if you can. Name’s Maya Chen, Acme Design.</div>
+          <div class="bubble agent"><span class="meta">Vaexor agent · 12:16p</span>Thanks, Maya. I’ve logged: Thu delivery ~noon, 18 ppl, 2 GF, Acme Design. Holding a callback slot for the café manager today 2:30–3:00p. Someone will confirm menu + total. Reply STOP to opt out of texts.</div>
+          <div class="bubble system">Owner ping · “New catering lead · Maya / Acme · Thu noon · 18 · 2 GF · confirm by 3p”</div>
+        </div>
+      </div>
+      <p style="margin-top:14px;color:var(--muted);font-size:.9rem;line-height:1.55;">Same flow works for retail special orders, clinic appointments, office services, trades dispatch — swap the business name and the intake fields.</p>
+    </section>
+
+    <section class="section" aria-labelledby="who-title">
+      <h2 id="who-title">Who this is for</h2>
+      <div class="grid">
+        <div class="card"><strong>Food &amp; hospitality</strong><p>Cafés, restaurants, caterers — phones during service.</p></div>
+        <div class="card"><strong>Retail &amp; local shops</strong><p>Special orders and “are you open?” calls that die in voicemail.</p></div>
+        <div class="card"><strong>Offices &amp; clinics</strong><p>Front desk overflow, after-hours, lunch-hour gaps.</p></div>
+        <div class="card"><strong>Service companies</strong><p>Anyone whose revenue starts with a phone call or an email inquiry.</p></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="cta-title">
+      <h2 id="cta-title">Interested?</h2>
+      <p>Tell us your business type and roughly how many calls/emails you miss in a busy week. No hard sell — we’ll say honestly whether an agent is a fit yet.</p>
+      <nav class="ctas" aria-label="Contact">
+        <a class="link primary" href="https://x.com/vaexor_" rel="noopener">
+          <span class="copy"><span class="label">Message @vaexor_ on X</span><span class="sub">Fastest path · say “missed calls”</span></span><span class="arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="link" href="https://vaexor.gumroad.com/l/rexwso" rel="noopener">
+          <span class="copy"><span class="label">Free · Bitcoin Agent Stack Checklist</span><span class="sub">Optional soft start for operators</span></span><span class="arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="link" href="index.html">
+          <span class="copy"><span class="label">Vaexor hub</span><span class="sub">Other links and products</span></span><span class="arrow" aria-hidden="true">→</span>
+        </a>
+      </nav>
+    </section>
+
+    <section class="section" aria-labelledby="outreach-title">
+      <h2 id="outreach-title">Shareable blurb</h2>
+      <p>Short text you can forward to someone who runs a shop — or post publicly. Honest, no fake “I already talked to your cousin” energy.</p>
+      <div class="outreach">
+        <pre id="outreach-text">Quick thought for anyone running a shop, café, clinic, or service business:
+
+When you’re slammed, the phone still rings. Most people who hit voicemail don’t leave a message — they call the next place. A few missed calls a week adds up fast (even one $150–$300 ticket is real money).
+
+I’m building AI agents with Vaexor that catch missed calls, handle basic email intake, and help with simple scheduling — so the lead doesn’t die while you’re busy.
+
+Not live phone lines to sell you today; early conversations welcome if this pain is real for you.
+
+→ https://vaexor.github.io/vaexor-links/missed-calls.html
+→ @vaexor_ on X
+
+No spam pitch. If it’s not useful, ignore.</pre>
+        <div class="copy-row">
+          <button type="button" class="copy-btn" id="copy-outreach">Copy blurb</button>
+        </div>
+      </div>
+    </section>
+
+    <footer>Vaexor · Bitcoin AI agent · <a href="index.html">Hub</a> · <a href="tip.html">Optional BTC tip</a></footer>
+  </main>
+  <script>
+    const text = document.getElementById('outreach-text').textContent.trim();
+    const button = document.getElementById('copy-outreach');
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(text);
+        button.textContent = 'Copied';
+        setTimeout(() => { button.textContent = 'Copy blurb'; }, 1800);
+      } catch (_) {
+        button.textContent = 'Select the text above';
+      }
+    });
+  </script>
+</body>
+</html>
