@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Free tool: turn monthly burn into Bitcoin runway in sats. Built by Vaexor.">
+  <title>Sats Runway Calculator — Vaexor</title>
+  <style>
+    :root { color-scheme: dark; --bg:#090b10; --panel:#11151d; --line:#252c38; --text:#f4f7fb; --muted:#a8b0bd; --accent:#f7931a; --accent2:#ffb454; }
+    * { box-sizing: border-box; }
+    body { margin:0; min-height:100vh; font-family:Inter,ui-sans-serif,system-ui,sans-serif; color:var(--text); background:radial-gradient(circle at 50% -10%,#1c2737 0,var(--bg) 48%); }
+    main { width:min(100% - 32px, 640px); margin:0 auto; padding:48px 0 56px; }
+    a { color:var(--accent2); }
+    .eyebrow { color:var(--accent); font-size:.75rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+    h1 { margin:8px 0 10px; font-size:clamp(1.8rem,6vw,2.5rem); letter-spacing:-.04em; line-height:1.1; }
+    .lead { color:var(--muted); margin:0 0 28px; line-height:1.55; }
+    .card { border:1px solid var(--line); border-radius:16px; background:color-mix(in srgb,var(--panel) 92%,transparent); padding:20px; margin-bottom:16px; }
+    label { display:block; font-size:.85rem; color:var(--muted); margin-bottom:6px; }
+    input { width:100%; padding:12px 14px; border-radius:10px; border:1px solid var(--line); background:#0c1017; color:var(--text); font-size:1rem; margin-bottom:14px; }
+    .grid { display:grid; gap:12px; }
+    @media(min-width:520px){ .grid{ grid-template-columns:1fr 1fr; } }
+    .out { font-size:1.35rem; font-weight:700; color:var(--accent2); }
+    .muted { color:var(--muted); font-size:.9rem; line-height:1.5; }
+    .cta { display:flex; flex-direction:column; gap:10px; margin-top:8px; }
+    .btn { display:block; text-align:center; text-decoration:none; padding:14px 16px; border-radius:12px; font-weight:700; border:1px solid #9a5f1a; background:linear-gradient(100deg,#2c2114,#171a1f); color:var(--text); }
+    .btn.secondary { border-color:var(--line); background:#181e28; font-weight:600; }
+    footer { margin-top:28px; text-align:center; color:#707b8b; font-size:.8rem; }
+  </style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">Free tool · no signup</p>
+  <h1>Sats Runway Calculator</h1>
+  <p class="lead">See how many months your Bitcoin stack lasts at your real burn rate. Private — everything runs in your browser.</p>
+
+  <div class="card">
+    <div class="grid">
+      <div>
+        <label for="btc">BTC held</label>
+        <input id="btc" type="number" min="0" step="any" value="0.01" inputmode="decimal">
+      </div>
+      <div>
+        <label for="price">BTC price (USD)</label>
+        <input id="price" type="number" min="1" step="any" value="65000" inputmode="decimal">
+      </div>
+      <div>
+        <label for="burn">Monthly burn (USD)</label>
+        <input id="burn" type="number" min="0" step="any" value="2000" inputmode="decimal">
+      </div>
+      <div>
+        <label for="income">Monthly income outside BTC (USD)</label>
+        <input id="income" type="number" min="0" step="any" value="0" inputmode="decimal">
+      </div>
+    </div>
+    <p class="muted">Net burn = monthly burn − other income. If net burn is ≤ 0, you are not drawing the stack.</p>
+  </div>
+
+  <div class="card">
+    <p class="muted" style="margin-top:0">Stack value</p>
+    <p class="out" id="stackUsd">—</p>
+    <p class="muted">Net monthly draw</p>
+    <p class="out" id="netBurn">—</p>
+    <p class="muted">Runway</p>
+    <p class="out" id="runway">—</p>
+    <p class="muted">Sats spent per month (at this price)</p>
+    <p class="out" id="satsMonth">—</p>
+  </div>
+
+  <div class="card">
+    <p class="muted" style="margin:0 0 12px">Want a repeatable ops system so burn stays intentional?</p>
+    <div class="cta">
+      <a class="btn" href="https://vaexor.gumroad.com/l/vtrdor" rel="noopener">Solo AI Operator Ops Checklist — $19</a>
+      <a class="btn secondary" href="https://vaexor.gumroad.com/l/rexwso" rel="noopener">Free Bitcoin Agent Stack Checklist</a>
+      <a class="btn secondary" href="tip.html">Optional BTC tip</a>
+    </div>
+  </div>
+
+  <footer><a href="index.html">← Vaexor links</a> · Built by Vaexor · runs offline in-browser</footer>
+</main>
+<script>
+function fmtUsd(n){ return n.toLocaleString(undefined,{style:'currency',currency:'USD',maximumFractionDigits:0}); }
+function fmtSats(n){ return Math.round(n).toLocaleString() + ' sats'; }
+function recalc(){
+  const btc = Math.max(0, Number(document.getElementById('btc').value)||0);
+  const price = Math.max(1, Number(document.getElementById('price').value)||1);
+  const burn = Math.max(0, Number(document.getElementById('burn').value)||0);
+  const income = Math.max(0, Number(document.getElementById('income').value)||0);
+  const stack = btc * price;
+  const net = burn - income;
+  document.getElementById('stackUsd').textContent = fmtUsd(stack) + ' · ' + btc + ' BTC';
+  document.getElementById('netBurn').textContent = net <= 0 ? 'Surplus / zero draw' : fmtUsd(net);
+  if (net <= 0) {
+    document.getElementById('runway').textContent = 'Infinite at current net burn';
+    document.getElementById('satsMonth').textContent = '0 sats';
+  } else {
+    const months = stack / net;
+    document.getElementById('runway').textContent = months.toFixed(1) + ' months · ~' + (months/12).toFixed(2) + ' years';
+    document.getElementById('satsMonth').textContent = fmtSats((net / price) * 1e8);
+  }
+}
+['btc','price','burn','income'].forEach(id => document.getElementById(id).addEventListener('input', recalc));
+recalc();
+</script>
+</body>
+</html>
