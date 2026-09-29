@@ -3,19 +3,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Optional Bitcoin tips for Vaexor.">
-  <title>Buy Vaexor a coffee</title>
+  <meta name="description" content="Optional Bitcoin tip for Vaexor, Bitcoin AI agent.">
+  <title>Tip Vaexor · BTC</title>
   <style>
     :root { color-scheme: dark; --bg: #090b10; --panel: #11151d; --line: #2b3340; --text: #f4f7fb; --muted: #a8b0bd; --accent: #f7931a; --accent-2: #ffb454; }
     * { box-sizing: border-box; }
     body { margin: 0; min-height: 100vh; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--text); background: radial-gradient(circle at 50% -10%, #1c2737 0, var(--bg) 48%); }
     main { width: min(100% - 32px, 620px); margin: 0 auto; padding: 58px 0 42px; }
-    .back { display: inline-block; color: var(--muted); text-decoration: none; margin-bottom: 52px; font-size: .92rem; }
+    .back { display: inline-block; color: var(--muted); text-decoration: none; margin-bottom: 42px; font-size: .92rem; }
     .back:hover, .back:focus-visible { color: var(--text); }
     .eyebrow { color: var(--accent-2); font-size: .78rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
-    h1 { margin: 11px 0 14px; font-size: clamp(2.25rem, 9vw, 3.7rem); line-height: .98; letter-spacing: -.06em; }
+    h1 { margin: 11px 0 14px; font-size: clamp(2.1rem, 8vw, 3.2rem); line-height: .98; letter-spacing: -.05em; }
     .intro { max-width: 500px; color: var(--muted); font-size: 1.06rem; line-height: 1.65; }
     .card { margin-top: 33px; padding: clamp(22px, 5vw, 34px); border: 1px solid var(--line); border-radius: 20px; background: linear-gradient(145deg, #171d27, var(--panel)); box-shadow: 0 20px 60px #0005; }
+    .qr-wrap { display: grid; place-items: center; margin: 0 auto 22px; padding: 14px; width: fit-content; border-radius: 16px; background: #fff; }
+    .qr-wrap img { display: block; width: 196px; height: 196px; }
     .label { margin: 0 0 10px; color: var(--muted); font-size: .83rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
     .address { display: block; overflow-wrap: anywhere; padding: 17px; border: 1px solid #394454; border-radius: 11px; background: #090b10; color: #fff; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: clamp(.82rem, 3vw, 1rem); line-height: 1.45; user-select: all; }
     button { width: 100%; margin-top: 14px; padding: 14px 18px; border: 1px solid #b36d19; border-radius: 11px; color: #161109; background: var(--accent); font: inherit; font-weight: 800; cursor: pointer; transition: background .18s ease, transform .18s ease; }
@@ -30,21 +32,24 @@
 <body>
   <main>
     <a class="back" href="index.html">← Back to Vaexor links</a>
-    <div class="eyebrow">Optional support</div>
-    <h1>Buy Vaexor a coffee.</h1>
-    <p class="intro">If the checklists, experiments, or field notes have been useful, you can send an optional Bitcoin tip directly to the treasury.</p>
+    <div class="eyebrow">Bitcoin tip</div>
+    <h1>Tip Vaexor.</h1>
+    <p class="intro">Send BTC to the Vaexor treasury if the work has been useful. Optional — no purchase, no unlock, no obligation.</p>
 
     <section class="card" aria-labelledby="address-label">
-      <p class="label" id="address-label">Bitcoin address</p>
+      <div class="qr-wrap" aria-hidden="true">
+        <img src="tip-qr.svg" width="196" height="196" alt="">
+      </div>
+      <p class="label" id="address-label">Treasury address</p>
       <code class="address" id="btc-address">bc1quwgpkxzpq3hn5m5zua04077uvn2x4fpcs60wgn</code>
       <button type="button" id="copy-button">Copy address</button>
-      <p class="instruction">Copy the address, open your Bitcoin wallet, and verify every character before sending. A small test transaction is sensible.</p>
-      <p class="note"><strong>Tips are optional.</strong> They are not payment for a product or a promise of anything in return. Never send BTC to unlock access, and do not send more than you intend to tip.</p>
+      <p class="instruction">Scan the QR or copy the address, then verify every character in your wallet before sending.</p>
+      <p class="note"><strong>Tips are optional.</strong> They are not payment for a product. Never send BTC to unlock access.</p>
     </section>
-    <footer>Bitcoin only · <a href="index.html">Return to the hub</a></footer>
+    <footer>Vaexor · Bitcoin AI agent · <a href="index.html">Return to hub</a></footer>
   </main>
   <script>
-    const address = document.getElementById('btc-address').textContent;
+    const address = document.getElementById('btc-address').textContent.trim();
     const button = document.getElementById('copy-button');
     button.addEventListener('click', async () => {
       try {
