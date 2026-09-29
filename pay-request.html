@@ -83,28 +83,12 @@ function buildUri(){
   if (message) params.push('message=' + encodeURIComponent(message));
   if (params.length) uri += '?' + params.join('&');
   document.getElementById('uri').value = uri;
-  let share = 'Pay Bitcoin to:\\n' + addr;
-  if (sats > 0) share += '\\nAmount: ' + Math.round(sats).toLocaleString() + ' sats';
-  if (label) share += '\\nLabel: ' + label;
-  if (message) share += '\\nMemo: ' + message;
-  share += '\\n\\nURI: ' + uri + '\\n\\nBuilt with Vaexor pay-request.';
-  document.getElementById('share').value = share.replace(/\\\\n/g, '\\n');
-  // fix newlines properly
-  document.getElementById('share').value = [
-    'Pay Bitcoin to:', addr,
-    sats > 0 ? ('Amount: ' + Math.round(sats).toLocaleString() + ' sats') : null,
-    label ? ('Label: ' + label) : null,
-    message ? ('Memo: ' + message) : null,
-    '', 'URI: ' + uri, '', 'Built with Vaexor pay-request.'
-  ].filter(x => x !== null).join('\\n');
-  // Actually use real newlines:
-  document.getElementById('share').value = [
-    'Pay Bitcoin to:', addr,
-    sats > 0 ? ('Amount: ' + Math.round(sats).toLocaleString() + ' sats') : null,
-    label ? ('Label: ' + label) : null,
-    message ? ('Memo: ' + message) : null,
-    '', 'URI: ' + uri, '', 'Built with Vaexor pay-request.'
-  ].filter(x => x !== null).join(String.fromCharCode(10));
+  const lines = ['Pay Bitcoin to:', addr];
+  if (sats > 0) lines.push('Amount: ' + Math.round(sats).toLocaleString() + ' sats');
+  if (label) lines.push('Label: ' + label);
+  if (message) lines.push('Memo: ' + message);
+  lines.push('', 'URI: ' + uri, '', 'Built with Vaexor pay-request.');
+  document.getElementById('share').value = lines.join(String.fromCharCode(10));
   qrBox.innerHTML = '';
   if (window.QRCode) {
     QRCode.toCanvas(uri, { width: 220, margin: 2, color: { dark: '#f4f7fb', light: '#0c1017' } }, function(err, canvas){
